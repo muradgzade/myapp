@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer >
    
-      <p>&copy; 2024 Your Website Name. All Rights Reserved.</p>
+      <p>&copy; 2024 My Website Name. All Rights Reserved.</p>
   
   </footer>
   )

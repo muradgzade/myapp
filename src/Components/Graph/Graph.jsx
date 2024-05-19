@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { dia, shapes } from "jointjs";
 import "../Graph/Graph.scss";
 
-const Graph = ({ imageData }) => {
+const Graph = ({ imageData, connections }) => {
   useEffect(() => {
     const graph = new dia.Graph();
 
@@ -35,45 +35,47 @@ const Graph = ({ imageData }) => {
     // Clear the graph to remove any existing nodes and links
     graph.clear();
 
-    let previousNode = null;
-    imageData.forEach((img, index) => {
+    // Create nodes
+    const nodes = {};
+    imageData.forEach((img) => {
       const node = createImageNode(
         img.position.x,
         img.position.y,
         img.src,
         img.label,
-        img.ipAddress // Pass IP address to the createImageNode function
+        img.ipAddress
       );
       node.addTo(graph);
-
-      // Create a link to the previous node if it exists
-      if (previousNode) {
-        const link = new dia.Link({
-          source: { id: previousNode.id },
-          target: { id: node.id },
-          attrs: {
-            line: {
-              stroke: "black",
-              strokeWidth: 2,
-            },
-            ".marker-source": {
-              display: "none",
-            },
-            ".marker-target": {
-              display: "none",
-            },
-          },
-        });
-        link.addTo(graph);
-      }
-
-      previousNode = node;
+      nodes[img.id] = node;
     });
-  }, [imageData]);
 
-    return <div id="paper">
-      
-  </div>;
+    // Create links based on connections
+    connections.forEach(({ source, targets }) => {
+      targets.forEach((target) => {
+        if (nodes[source] && nodes[target]) {
+          const link = new dia.Link({
+            source: { id: nodes[source].id },
+            target: { id: nodes[target].id },
+            attrs: {
+              line: {
+                stroke: "red",
+                strokeWidth: 2,
+              },
+              ".marker-source": {
+                display: "none",
+              },
+              ".marker-target": {
+                display: "block",
+              },
+            },
+          });
+          link.addTo(graph);
+        }
+      });
+    });
+  }, [imageData, connections]);
+
+  return <div id="paper"></div>;
 };
 
 export default Graph;

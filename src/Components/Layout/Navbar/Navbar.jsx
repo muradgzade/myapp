@@ -6,12 +6,12 @@ function Navbar() {
     
       <header >
         <a href="#" >
-          4o4.
+          telco.
         </a>
         <nav>
           <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Services</a>
+          <a href="#">Features</a>
+          <a href="#">Integration</a>
           <a href="#">Contact</a>
         </nav>
       </header>
